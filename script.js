@@ -1,19 +1,23 @@
 const makeList = document.getElementById("makeList");
 let make = makeList.value;
 
+
 makeList.addEventListener("change", () => {
     make = makeList.value;
     getModels(make);
 });
 
-function getModels() {
+async function getModels() {
     //  https://vpic.nhtsa.dot.gov/api/Home/Index/LanguageExamples
     // get the list of models for the selected make
-    fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/${make}?format=json`)
-        .then((response) => response.json())
-        .then((data) => {
-            appendModels(data.Results);
-        });
+
+    const url = "https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMake/"
+
+      const params = "format=json"  
+      const response = await fetch(url + make+"?"+params); 
+      const model = await response.json()
+      appendModels(model.Results)
+      
 }
 
 function appendModels(models) {
